@@ -17,6 +17,7 @@ abstract class ViewBindingActivity<VB: ViewDataBinding>: InnocentActivity() {
     lateinit var viewBinding: VB
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        makeStatusBarWhite()
         super.onCreate(savedInstanceState)
         viewBinding = DataBindingUtil.setContentView(this,layoutRes)
 

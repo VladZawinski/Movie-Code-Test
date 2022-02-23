@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
 import non.shahad.domain.flow.HomeDataFlow
+import non.shahad.domain.model.Movie
 import non.shahad.domain.repository.HomeRepository
 import non.shahad.domain.repository.MovieRepository
 import non.shahad.domain.usecase.HomeUseCase
@@ -26,9 +27,6 @@ class HomeViewModel @Inject constructor(
         fetch(false)
     }
 
-    /**
-     * Intent Scope
-     */
     private fun fetch(fresh: Boolean) = intent {
         useCase.streamHomeData(fresh)
             .flowOn(Dispatchers.IO)
@@ -63,6 +61,31 @@ class HomeViewModel @Inject constructor(
                     }
                 }
             }
+    }
+
+    fun actionFavorite(movie: Movie) = intent {
+        makeInternalStateChanges(movie)
+    }
+
+    private fun makeInternalStateChanges(movie: Movie) = intent {
+        if (movie.query == "popular"){
+            val cloned = state.popularMovies.toMutableList()
+            val indexOfCurrent = cloned.indexOf(movie)
+
+            if (movie.isFavorite){
+                val initial = movie.copy(isFavorite = false)
+                cloned[indexOfCurrent] = initial
+            } else {
+                val initial = movie.copy(isFavorite = true)
+                cloned[indexOfCurrent] = initial
+            }
+
+            reduce {
+                state.copy(popularMovies = cloned)
+            }
+        } else {
+
+        }
     }
 
     fun refresh() = kotlin.run { fetch(true) }

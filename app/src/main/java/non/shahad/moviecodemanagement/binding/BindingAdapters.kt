@@ -7,6 +7,6 @@ import coil.load
 @BindingAdapter("bindImageView")
 fun simpleLoadImage(imageView: ImageView, posterUrl: String?) {
     posterUrl?.let {
-        imageView.load(posterUrl)
+        imageView.load("https://image.tmdb.org/t/p/w500/${posterUrl}")
     }
 }

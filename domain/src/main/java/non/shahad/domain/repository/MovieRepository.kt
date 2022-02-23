@@ -12,4 +12,5 @@ interface MovieRepository {
     suspend fun cachedUpcomingMovies(): List<Movie>
     suspend fun storeToCache(movies: List<Movie>)
     suspend fun updateMovie(movie: Movie)
+    suspend fun getMovieById(id: Int): Movie?
 }

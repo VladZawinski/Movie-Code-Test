@@ -11,4 +11,7 @@ abstract class MovieDao: BaseDao<MovieEntity>() {
 
     @Query("SELECT * FROM movie WHERE `query` = :by")
     abstract fun queryAll(by: String): List<MovieEntity>?
+
+    @Query("SELECT * FROM movie WHERE `id` = :id")
+    abstract fun findById(id: Int): MovieEntity?
 }

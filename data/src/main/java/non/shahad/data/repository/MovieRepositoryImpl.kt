@@ -57,4 +57,12 @@ class MovieRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun getMovieById(id: Int): Movie? {
+        dao.findById(id)?.let {
+            return it.toDomainModel()
+        }
+
+        return null
+    }
+
 }
