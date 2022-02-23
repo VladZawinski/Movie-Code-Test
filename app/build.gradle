@@ -1,0 +1,85 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
+}
+
+android {
+    compileSdk 31
+
+    defaultConfig {
+        applicationId "non.shahad.moviecodemanagement"
+        minSdk 26
+        targetSdk 31
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    kapt {
+        correctErrorTypes true
+    }
+}
+
+dependencies {
+    implementation(project(":core"))
+
+    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'com.google.android.material:material:1.5.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.3'
+
+    implementation dagger.hilt
+    kapt dagger.hilt_compiler
+
+    implementation mvi.orbit_mvi_core
+    implementation mvi.orbit_mvi_viewmodel
+
+    implementation jetbrain.coroutines_core
+    implementation jetbrain.coroutines_android
+
+    implementation jetpack.lifecycle_ktx
+    implementation jetpack.fragment_ktx
+
+    implementation network.retrofit
+    implementation network.moshi
+
+    implementation github.coil
+
+    implementation jetpack.room
+    implementation jetpack.room_coroutine_support
+    kapt jetpack.room_kapt
+
+    implementation github.adapter_delegate
+    implementation github.adapter_delegate_viewbinding
+
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}
