@@ -7,7 +7,6 @@ import non.shahad.data.service.TMDBService
 import non.shahad.domain.model.Movie
 import non.shahad.domain.repository.MovieRepository
 import javax.inject.Inject
-import javax.inject.Singleton
 
 class MovieRepositoryImpl @Inject constructor(
     private val service: TMDBService,
@@ -41,9 +40,10 @@ class MovieRepositoryImpl @Inject constructor(
         return dao.queryAll(UPCOMING)?.map { it.toDomainModel() } ?: emptyList()
     }
 
-    override suspend fun storeToCache(movies: List<Movie>) {
+
+    override suspend fun storeToCache(movies: List<Movie>,query: String) {
         try {
-            dao.insertAll(movies.map { it.toEntity() })
+            dao.deleteAndInsertByQuery(movies.map { it.toEntity(query) },query)
         } catch (e: Throwable){
 
         }
@@ -63,6 +63,14 @@ class MovieRepositoryImpl @Inject constructor(
         }
 
         return null
+    }
+
+    override suspend fun addToFavorite(id: Int) {
+        dao.changeStatusById(id, true)
+    }
+
+    override suspend fun removeFromFavorite(id: Int) {
+        dao.changeStatusById(id, false)
     }
 
 }

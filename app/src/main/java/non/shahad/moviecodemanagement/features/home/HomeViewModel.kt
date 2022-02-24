@@ -2,6 +2,7 @@ package non.shahad.moviecodemanagement.features.home
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
 import non.shahad.domain.flow.HomeDataFlow
@@ -69,25 +70,48 @@ class HomeViewModel @Inject constructor(
 
     private fun makeInternalStateChanges(movie: Movie) = intent {
         if (movie.query == "popular"){
-            val cloned = state.popularMovies.toMutableList()
-            val indexOfCurrent = cloned.indexOf(movie)
-
-            if (movie.isFavorite){
-                val initial = movie.copy(isFavorite = false)
-                cloned[indexOfCurrent] = initial
-            } else {
-                val initial = movie.copy(isFavorite = true)
-                cloned[indexOfCurrent] = initial
-            }
-
+            val cloned = state.popularMovies.getTunedFavoriteStatus(movie)
             reduce {
                 state.copy(popularMovies = cloned)
             }
         } else {
-
+            val cloned = state.upcomingMovies.getTunedFavoriteStatus(movie)
+            reduce {
+                state.copy(upcomingMovies = cloned)
+            }
         }
     }
 
-    fun refresh() = kotlin.run { fetch(true) }
+    private fun List<Movie>.getTunedFavoriteStatus(movie: Movie): List<Movie> {
+        return mutableListOf<Movie>().also {
+            it.addAll(this)
+            val indexOfCurrent = indexOf(movie)
 
+            if (movie.isFavorite) {
+                val initial = movie.copy(isFavorite = false)
+                it[indexOfCurrent] = initial
+                remove(movie.id)
+            } else {
+                val initial = movie.copy(isFavorite = true)
+                it[indexOfCurrent] = initial
+                add(movie.id)
+            }
+        }
+    }
+
+    private fun remove(id: Int) = intent {
+        useCase.removeFromFavorite(id).collect()
+        postSideEffect(HomeSideEffect.ShowSnackBar("Remove from Favorite"))
+    }
+
+    private fun add(id: Int) = intent {
+        useCase.addToFavorite(id).collect()
+        postSideEffect(HomeSideEffect.ShowSnackBar("Add to Favorite"))
+    }
+
+    /**
+     * All of our favorite flag will be removed so
+     * we will refresh from remote source
+     */
+    fun refresh() = kotlin.run { fetch(true) }
 }

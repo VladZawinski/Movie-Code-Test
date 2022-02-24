@@ -30,7 +30,7 @@ class HomeActivity(
         movieItem(
             onClick = ::onItemClick,
             onFavorite = {
-
+                viewModel.actionFavorite(it)
             }
         )
     )
@@ -40,15 +40,25 @@ class HomeActivity(
         movieItem(
             onClick = ::onItemClick,
             onFavorite = {
-
+                viewModel.actionFavorite(it)
             }
         )
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewBinding.popularRv.adapter = popularDelegate
-        viewBinding.upComingRv.adapter = upcomingDelegate
+        viewBinding.popularRv.apply {
+            adapter = popularDelegate
+            setHasFixedSize(true)
+        }
+        viewBinding.upComingRv.apply {
+            adapter = upcomingDelegate
+            setHasFixedSize(true)
+        }
+
+        viewBinding.swiper.setOnRefreshListener {
+            viewModel.refresh()
+        }
     }
 
     override val viewModel: HomeViewModel
@@ -63,11 +73,7 @@ class HomeActivity(
     }
 
     override fun render(state: HomeState) {
-        if (state.isLoading){
-
-        } else {
-
-        }
+        viewBinding.swiper.isRefreshing = state.isLoading
 
         popularDelegate.items = state.popularMovies
         upcomingDelegate.items = state.upcomingMovies

@@ -23,10 +23,20 @@ class DetailUseCase @Inject constructor(
 
     }
 
-    fun updateMovie(movie: Movie): Flow<InteractorFlow> = flow {
+    fun removeFromFavorite(id: Int): Flow<InteractorFlow> = flow<InteractorFlow> {
         try {
             emit(InteractorFlow.JobStarted)
-            movieRepository.updateMovie(movie)
+            movieRepository.removeFromFavorite(id)
+            emit(InteractorFlow.Done)
+        } catch (e: Exception){
+            emit(InteractorFlow.Error(e.message!!, e))
+        }
+    }
+
+    fun addToFavorite(id: Int): Flow<InteractorFlow> = flow {
+        try {
+            emit(InteractorFlow.JobStarted)
+            movieRepository.addToFavorite(id)
             emit(InteractorFlow.Done)
         } catch (e: Exception){
             emit(InteractorFlow.Error(e.message!!, e))

@@ -26,12 +26,12 @@ class HomeUseCase  @Inject constructor(
             emit(HomeDataFlow.Cached(upcomingCache,popularCache))
 
             if (fresh || upcomingCache.isExpired() || popularCache.isExpired()){
-                Timber.d("Fresh")
+
                 val freshPopular = movieRepository.freshPopularMovies()
                 val freshUpcoming = movieRepository.freshUpcomingMovies()
-                Timber.d("$freshPopular")
-                movieRepository.storeToCache(freshPopular)
-                movieRepository.storeToCache(freshUpcoming)
+
+                movieRepository.storeToCache(freshPopular, "popular")
+                movieRepository.storeToCache(freshUpcoming, "upcoming")
 
                 emit(HomeDataFlow.FreshByCached(freshUpcoming, freshPopular))
             }
@@ -44,10 +44,20 @@ class HomeUseCase  @Inject constructor(
         }
     }
 
-    fun updateMovie(movie: Movie): Flow<InteractorFlow> = flow {
+    fun removeFromFavorite(id: Int): Flow<InteractorFlow> = flow<InteractorFlow> {
         try {
             emit(InteractorFlow.JobStarted)
-            movieRepository.updateMovie(movie)
+            movieRepository.removeFromFavorite(id)
+            emit(InteractorFlow.Done)
+        } catch (e: Exception){
+            emit(InteractorFlow.Error(e.message!!, e))
+        }
+    }
+
+    fun addToFavorite(id: Int): Flow<InteractorFlow> = flow {
+        try {
+            emit(InteractorFlow.JobStarted)
+            movieRepository.addToFavorite(id)
             emit(InteractorFlow.Done)
         } catch (e: Exception){
             emit(InteractorFlow.Error(e.message!!, e))

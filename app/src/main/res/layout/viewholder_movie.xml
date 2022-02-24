@@ -8,14 +8,16 @@
             type="non.shahad.domain.model.Movie" />
     </data>
 <androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="96dp"
+    android:layout_height="156dp"
     android:layout_margin="8dp">
+
+
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
         android:layout_width="96dp"
-        android:layout_height="108dp"
+        android:layout_height="122dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -34,10 +36,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@{movie.title}"
+        android:minLines="1"
+        android:maxLines="1"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/materialCardView"
         app:layout_constraintTop_toBottomOf="@+id/materialCardView"
         tools:text="Title" />
+
+    <ImageView
+        android:id="@+id/favoriteBtn"
+        bindFavoriteActions="@{movie.favorite}"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:elevation="8dp"
+        android:src="@drawable/ic_baseline_favorite_border_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

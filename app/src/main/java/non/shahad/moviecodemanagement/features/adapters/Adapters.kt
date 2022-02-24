@@ -17,5 +17,8 @@ fun movieItem(
         binding.root.setOnClickListener {
             onClick(item)
         }
+        binding.favoriteBtn.setOnClickListener {
+            onFavorite(item)
+        }
     }
 }

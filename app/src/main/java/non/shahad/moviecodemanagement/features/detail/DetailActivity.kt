@@ -20,6 +20,10 @@ class DetailActivity(
         intent.extras?.getInt(MOVIE_ID_KEY)?.also {
             viewModel.fetch(it)
         }
+
+        viewBinding.heartBtn.setOnClickListener {
+            viewModel.actionFavorite()
+        }
     }
 
     override val viewModel: DetailViewModel
@@ -34,7 +38,6 @@ class DetailActivity(
     }
 
     override fun render(state: DetailState) {
-        Timber.d("$state")
         viewBinding.movie = state.movie
     }
 }

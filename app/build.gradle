@@ -70,7 +70,8 @@ dependencies {
     implementation network.retrofit
     implementation network.moshi
 
-    implementation github.coil
+    implementation github.glide
+    kapt github.glide_compiler
 
     implementation jetpack.room
     implementation jetpack.room_coroutine_support
@@ -78,6 +79,8 @@ dependencies {
 
     implementation github.adapter_delegate
     implementation github.adapter_delegate_viewbinding
+
+    implementation appcompact.swipe_refresh_layout
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

@@ -3,7 +3,9 @@ ext {
             timber: 'com.jakewharton.timber:timber:5.0.1',
             adapter_delegate: 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl:4.3.1',
             adapter_delegate_viewbinding: 'com.hannesdorfmann:adapterdelegates4-kotlin-dsl-viewbinding:4.3.1',
-            coil: 'io.coil-kt:coil:1.4.0'
+            coil: 'io.coil-kt:coil:1.4.0',
+            glide: 'com.github.bumptech.glide:glide:4.13.0',
+            glide_compiler: 'com.github.bumptech.glide:compiler:4.13.0'
     ]
 
     mvi = [
@@ -22,6 +24,10 @@ ext {
             room_coroutine_support: 'androidx.room:room-ktx:2.3.0',
             lifecycle_ktx: 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0-alpha03',
             fragment_ktx: 'androidx.fragment:fragment-ktx:1.4.1'
+    ]
+
+    appcompact = [
+            swipe_refresh_layout: 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
     ]
 
     dagger = [

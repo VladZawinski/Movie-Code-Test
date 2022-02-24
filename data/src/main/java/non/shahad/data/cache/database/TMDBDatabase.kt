@@ -10,7 +10,7 @@ import non.shahad.data.cache.entities.MovieEntity
     entities = [
         MovieEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class TMDBDatabase: RoomDatabase() {

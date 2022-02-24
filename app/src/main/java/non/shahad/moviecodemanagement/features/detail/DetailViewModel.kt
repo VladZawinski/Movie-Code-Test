@@ -2,6 +2,7 @@ package non.shahad.moviecodemanagement.features.detail
 
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flowOn
 import non.shahad.domain.flow.LDEFlow
@@ -40,8 +41,18 @@ class DetailViewModel @Inject constructor(
             }
     }
 
-    fun addToFavorite(id: Int) = intent {
-
+    fun actionFavorite() = intent {
+        state.movie?.let {
+            if (it.isFavorite){
+                useCase.removeFromFavorite(it.id).collect()
+                reduce { state.copy(movie = it.copy(isFavorite = false)) }
+                postSideEffect(DetailSideEffect.ShowSnackBar("Remove from favorite"))
+            } else {
+                useCase.addToFavorite(it.id).collect()
+                reduce { state.copy(movie = it.copy(isFavorite = true)) }
+                postSideEffect(DetailSideEffect.ShowSnackBar("Added to favorite"))
+            }
+        }
     }
 
 }

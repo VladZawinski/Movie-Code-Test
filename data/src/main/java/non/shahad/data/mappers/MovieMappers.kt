@@ -31,6 +31,17 @@ suspend fun Movie.toEntity() =
         lastUpdateTimestamp = Date().time + Duration.ofMinutes(30).toMillis()
     )
 
+suspend fun Movie.toEntity(q: String) =
+    MovieEntity(
+        id = id,
+        voteAverage = voteAverage,
+        title = title,
+        posterPath = posterPath,
+        isFavorite = isFavorite,
+        query = q,
+        lastUpdateTimestamp = Date().time + Duration.ofMinutes(30).toMillis()
+    )
+
 suspend fun MovieDataModel.toDomainModel(query: String) =
     Movie(
         id = id,
