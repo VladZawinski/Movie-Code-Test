@@ -38,6 +38,12 @@ class DetailActivity(
     }
 
     override fun render(state: DetailState) {
+        if (state.isLoading){
+            // Show some loading spinner
+        } else {
+            // Hide that
+        }
+
         viewBinding.movie = state.movie
     }
 }

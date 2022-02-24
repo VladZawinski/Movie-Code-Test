@@ -24,11 +24,13 @@ class HomeViewModel @Inject constructor(
 ): MVIViewModel<HomeState,HomeSideEffect>() {
 
     override val container: Container<HomeState, HomeSideEffect>
-        = container(HomeState()) {
-        fetch(false)
-    }
+        = container(HomeState())
 
-    private fun fetch(fresh: Boolean) = intent {
+    /**
+     * If you want force refresh, set fresh to true
+     * We will fetch movies everytime home is resume.
+     */
+    fun fetch(fresh: Boolean) = intent {
         useCase.streamHomeData(fresh)
             .flowOn(Dispatchers.IO)
             .collectLatest {
@@ -110,8 +112,8 @@ class HomeViewModel @Inject constructor(
     }
 
     /**
-     * All of our favorite flag will be removed so
-     * we will refresh from remote source
+     * Note, this will wipe all of your cache.
+     * (That means favorite flags will be removed too)
      */
     fun refresh() = kotlin.run { fetch(true) }
 }

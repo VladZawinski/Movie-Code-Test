@@ -61,6 +61,11 @@ class HomeActivity(
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        viewModel.fetch(false)
+    }
+
     override val viewModel: HomeViewModel
         by viewModels()
 
